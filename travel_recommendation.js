@@ -36,25 +36,33 @@ function handleSearch(keyword) {
 
   let results = [];
 
-  // If "temples" is searched
-  if (keyword === "temples") {
+  // Normalize input: lowercase, trim, remove trailing punctuation
+  let cleanKeyword = keyword.replace(/[^a-zA-Z]/g, '').toLowerCase();
+
+  // If "temples" is searched (allow "temple" or "temples")
+  if (cleanKeyword === "temple" || cleanKeyword === "temples") {
     results = travelData.temples.map(t => ({
       name: t.name,
       imageUrl: t.imageUrl,
       description: t.description
     }));
   }
-  // If "beaches" is searched
-  else if (keyword === "beaches") {
+  // If "beaches" is searched (allow "beach" or "beaches")
+  else if (cleanKeyword === "beach" || cleanKeyword === "beaches") {
     results = travelData.beaches.map(b => ({
       name: b.name,
       imageUrl: b.imageUrl,
       description: b.description
     }));
   }
-  // If a country is searched (exact match)
+  // If a country is searched (exact match, ignoring punctuation)
   else {
-    const country = travelData.countries.find(c => c.name.toLowerCase() === keyword);
+    // Remove punctuation for country matching
+    const normalizedCountries = travelData.countries.map(c => ({
+      ...c,
+      normalName: c.name.replace(/[^a-zA-Z]/g, '').toLowerCase()
+    }));
+    const country = normalizedCountries.find(c => c.normalName === cleanKeyword);
     if (country) {
       results = country.cities.map(city => ({
         name: city.name,
