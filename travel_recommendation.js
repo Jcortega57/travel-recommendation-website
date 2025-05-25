@@ -93,3 +93,12 @@ function displayResults(results, keyword) {
 
   resultsDiv.innerHTML = `<div class="results-grid">${cards}</div>`;
 }
+
+/* RESET BUTTON */
+function resetSearchAndResults() {
+  // Clear the search input
+  document.getElementById('search-input').value = '';
+
+  // Clear the search results (including images and descriptions)
+  document.getElementById('search-results').innerHTML = '';
+}
